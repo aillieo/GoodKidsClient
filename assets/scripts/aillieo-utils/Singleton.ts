@@ -1,16 +1,33 @@
-// eslint-disable-next-line no-use-before-define
-export class Singleton<T extends Singleton<T>> {
-    // eslint-disable-next-line no-use-before-define
-    private static instance: Singleton<unknown>;
+export function Singleton<T>() {
+    class Singleton {
+        protected constructor() {}
 
-    public static getInstance<T extends Singleton<T>>(): T {
-        if (!Singleton.instance) {
-            Singleton.instance = new Singleton<T>() as Singleton<unknown>;
+        // eslint-disable-next-line no-use-before-define
+        private static instance: Singleton = null;
+
+        public static getInstance(): T {
+            if (Singleton.instance == null) {
+                Singleton.instance = new this();
+            }
+            return Singleton.instance as T;
         }
-        return Singleton.instance as T;
     }
+    return Singleton;
+}
 
-    // eslint-disable-next-line no-useless-constructor
-    protected constructor() {
+export class Singleton2 {
+
+    public constructor(){}
+
+    // eslint-disable-next-line no-unused-vars
+    static getInstance<T extends NonNullable<unknown>>(this:new()=>T):T {
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const clazz = <any> this;
+        if (!clazz.__instance) {
+            clazz.__instance = new this();
+        }
+
+        return clazz.__instance;
     }
 }

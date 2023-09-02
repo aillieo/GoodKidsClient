@@ -1,21 +1,19 @@
-import { _decorator, Component, Node, Label, log, Button } from "cc";
-import { Binder} from "../../aillieo-utils/Binder";
+import { _decorator, Component, Node, Label, log, Button, Toggle, EventHandler } from "cc";
+import { Binder } from "../../aillieo-utils/Binder";
 import { Property } from "../../aillieo-utils/Property";
 import { AppManager } from "../AppManager";
 import { BasePage } from "./BasePage";
-import { Toggle } from "cc";
-import { EventHandler } from "cc";
 const { ccclass, property } = _decorator;
 
 @ccclass("UIMainView")
 export class UIMainView extends Component {
     @property({
-        type:[BasePage]
+        type: [BasePage]
     })
     public pages: BasePage[] = [];
 
     @property({
-        type:[Toggle]
+        type: [Toggle]
     })
     public tabs: Toggle[] = [];
 
@@ -51,7 +49,7 @@ export class UIMainView extends Component {
     }
 
     protected onDisable() : void {
-        this.binder.clear;
+        this.binder.clear();
     }
 
     public onClick22() {

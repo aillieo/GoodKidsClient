@@ -16,12 +16,10 @@ export function Singleton<T>() {
 }
 
 export class Singleton2 {
-
-    public constructor(){}
+    public constructor() {}
 
     // eslint-disable-next-line no-unused-vars
     static getInstance<T extends NonNullable<unknown>>(this:new()=>T):T {
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const clazz = <any> this;
         if (!clazz.__instance) {

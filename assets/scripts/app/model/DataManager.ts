@@ -11,19 +11,18 @@ export type AppData = {
 
 // eslint-disable-next-line no-use-before-define
 export class DataManager extends Singleton2 {
-
     private data : AppData;
 
     public constructor() {
         super();
         this.data = {
-            name : "a",
-            age : 0,
-            photo:"a"
+            name: "a",
+            age: 0,
+            photo: "a"
         };
     }
 
-    async getData() : Promise<AppData>{
+    async getData() : Promise<AppData> {
         return this.data;
     }
 }

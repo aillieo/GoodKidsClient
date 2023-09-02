@@ -6,7 +6,6 @@ const { ccclass, property } = _decorator;
 
 // eslint-disable-next-line no-use-before-define
 export class AppManager extends Singleton<AppManager>() {
-
     private score : Property<number>;
 
     constructor() {

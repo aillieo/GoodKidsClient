@@ -4,7 +4,11 @@ import { Property } from "../../aillieo-utils/Property";
 import { BasePage } from "../main/BasePage";
 const { ccclass, property } = _decorator;
 
-@ccclass("PageGame")
-export class PageGame extends BasePage {
+@ccclass("DailyTaskItem")
+export class DailyTaskItem extends Component {
+    @property(Label)
+    public taskName : Label = null!;
 
+    @property(Label)
+    public taskDes : Label = null!;
 }

@@ -1,0 +1,13 @@
+{
+  "ver": "1.1.45",
+  "importer": "prefab",
+  "imported": true,
+  "uuid": "1be50896-b22b-4148-96bd-12db3ac613c7",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "DailyTaskItem"
+  }
+}

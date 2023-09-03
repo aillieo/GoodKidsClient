@@ -14,18 +14,3 @@ export function Singleton<T>() {
     }
     return Singleton;
 }
-
-export class Singleton2 {
-    public constructor() {}
-
-    // eslint-disable-next-line no-unused-vars
-    static getInstance<T extends NonNullable<unknown>>(this:new()=>T):T {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const clazz = <any> this;
-        if (!clazz.__instance) {
-            clazz.__instance = new this();
-        }
-
-        return clazz.__instance;
-    }
-}

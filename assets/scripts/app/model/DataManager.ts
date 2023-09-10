@@ -15,13 +15,21 @@ export type UserData = {
 }
 
 export type LoginData = {
-    name : string,
+    username : string,
     password : string,
+}
+
+export type TokenData = {
+    token : string,
+    uid : number,
 }
 
 // eslint-disable-next-line no-use-before-define
 export class DataManager extends Singleton<DataManager>() {
     private data : AppData;
+
+    private token: string;
+    private uid:number;
 
     protected constructor() {
         super();
@@ -36,11 +44,26 @@ export class DataManager extends Singleton<DataManager>() {
         return this.data;
     }
 
-    async getUserData() : Promise<UserData> {
+    async getUserData() : Promise<TokenData> {
         const login = {
-            name : "test",
-            password : "test",
+            username : "test1",
+            password : "test1",
         };
-        return HttpHelper.Post<LoginData, UserData>("http://127.0.0.1:8000/login", login);
+
+        const url = AppManager.getInstance().url;
+        const tokenData = await HttpHelper.Post<LoginData, TokenData>(url + "/login", login);
+
+        this.uid = tokenData.uid;
+        this.token = tokenData.token;
+
+        return tokenData;
+    }
+
+    async getDailyTasks() : Promise<object> {
+        const url = AppManager.getInstance().url;
+        return HttpHelper.Get<object>(url + "/dailytask/", {
+        }, {
+            Authorization: `Bearer ${this.token}`
+        });
     }
 }

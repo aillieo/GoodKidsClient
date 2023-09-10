@@ -6,14 +6,5 @@ const { ccclass, property } = _decorator;
 
 // eslint-disable-next-line no-use-before-define
 export class AppManager extends Singleton<AppManager>() {
-    private score : Property<number>;
-
-    constructor() {
-        super();
-        this.score = new Property<number>(0);
-    }
-
-    public getData() : Property<number> {
-        return this.score;
-    }
+    public url : string = "http://127.0.0.1:8000";
 }

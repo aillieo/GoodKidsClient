@@ -28,8 +28,8 @@ export type TokenData = {
 export class DataManager extends Singleton<DataManager>() {
     private data : AppData;
 
-    private token: string;
-    private uid:number;
+    private token : string|undefined;
+    private uid : number|undefined;
 
     protected constructor() {
         super();
@@ -44,14 +44,15 @@ export class DataManager extends Singleton<DataManager>() {
         return this.data;
     }
 
-    async getUserData() : Promise<TokenData> {
+    async getUserData(u:string, p:string, isReg:boolean) : Promise<TokenData> {
         const login = {
-            username : "test1",
-            password : "test1",
+            username: u,
+            password: p
         };
 
         const url = AppManager.getInstance().url;
-        const tokenData = await HttpHelper.Post<LoginData, TokenData>(url + "/login", login);
+        const fullURL = isReg ? (url + "/register") : (url + "/login");
+        const tokenData = await HttpHelper.Post<LoginData, TokenData>(fullURL, login);
 
         this.uid = tokenData.uid;
         this.token = tokenData.token;
@@ -62,6 +63,16 @@ export class DataManager extends Singleton<DataManager>() {
     async getDailyTasks() : Promise<object> {
         const url = AppManager.getInstance().url;
         return HttpHelper.Get<object>(url + "/dailytask/", {
+        }, {
+            Authorization: `Bearer ${this.token}`
+        });
+    }
+
+    async createTask() : Promise<object> {
+        const url = AppManager.getInstance().url;
+        return HttpHelper.Post<object, object>(url + "/dailytask/", {
+            taskName: "abc",
+            taskDes: "desc"
         }, {
             Authorization: `Bearer ${this.token}`
         });

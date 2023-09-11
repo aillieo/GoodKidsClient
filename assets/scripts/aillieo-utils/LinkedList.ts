@@ -15,7 +15,7 @@ class LinkedList<T> {
     private head: LinkedListNode<T> | null = null;
     private tail: LinkedListNode<T> | null = null;
 
-    public count() : number {
+    public count(): number {
         return 0;
     }
 
@@ -25,11 +25,10 @@ class LinkedList<T> {
         if (!this.head) {
             this.head = newNode;
             this.tail = newNode;
-        }
-        else {
+        } else {
             newNode.prev = this.tail;
-            this.tail!.next = newNode;
-            this.tail = newNode;
+      this.tail!.next = newNode;
+      this.tail = newNode;
         }
 
         return newNode;
@@ -42,15 +41,13 @@ class LinkedList<T> {
 
         if (node.prev) {
             node.prev.next = node.next;
-        }
-        else {
+        } else {
             this.head = node.next;
         }
 
         if (node.next) {
             node.next.prev = node.prev;
-        }
-        else {
+        } else {
             this.tail = node.prev;
         }
 

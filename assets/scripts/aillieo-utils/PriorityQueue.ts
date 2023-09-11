@@ -1,8 +1,8 @@
-type Comparer<T> = (x: T, y: T) => boolean;
+type Comparer<T> = (x: T, y: T) => boolean
 
 class PriorityQueue<T> {
     private data: T[];
-    private comparer: Comparer<T>;
+    private readonly comparer: Comparer<T>;
 
     constructor(comparer?: Comparer<T>) {
         this.data = [];
@@ -74,8 +74,7 @@ class PriorityQueue<T> {
             const parent = Math.floor((index - 1) / 2);
             if (index > 0 && this.comparer(this.data[index], this.data[parent])) {
                 this.siftUp(index);
-            }
-            else {
+            } else {
                 this.siftDown(index);
             }
             return true;

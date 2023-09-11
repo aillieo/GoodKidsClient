@@ -1,5 +1,5 @@
 class Stack<T> {
-    private data: T[] = [];
+    private readonly data: T[] = [];
 
     public push(x: T): void {
         this.data.push(x);

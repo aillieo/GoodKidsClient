@@ -39,7 +39,7 @@ export class UIMainView extends Component {
             console.log(v);
         });
 
-        for (let i = 0; i < 5; ++ i) {
+        for (let i = 0; i < 5; ++i) {
             const toggle : Toggle = this.tabs[i];
             const page : BasePage = this.pages[i];
             toggle.node.on("toggle", (t : Toggle) => {

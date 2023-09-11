@@ -1,14 +1,14 @@
-import { Action1 } from "./Action";
-import { LinkedList, LinkedListNode } from "./LinkedList";
+import { type Action1 } from "./Action";
+import { LinkedList, type LinkedListNode } from "./LinkedList";
 
 export class Handle {
-    private node : LinkedListNode<unknown>;
+    private readonly node: LinkedListNode<unknown>;
 
     constructor(node: LinkedListNode<unknown>) {
         this.node = node;
     }
 
-    public unlisten() : boolean {
+    public unlisten(): boolean {
         if (this.node.list == null) {
             return false;
         }
@@ -18,7 +18,7 @@ export class Handle {
 }
 
 export class Delegate<T> {
-    private listeners: LinkedList<Action1<T>>;
+    private readonly listeners: LinkedList<Action1<T>>;
 
     constructor() {
         this.listeners = new LinkedList<Action1<T>>();
@@ -38,15 +38,14 @@ export class Delegate<T> {
     }
 
     public invoke(arg: T): void {
-        this.listeners.forEach(listener => listener(arg));
+        this.listeners.forEach(listener => { listener(arg); });
     }
 
-    public safeInvoke(arg: T) : void {
+    public safeInvoke(arg: T): void {
         this.listeners.forEach(listener => {
             try {
                 listener(arg);
-            }
-            catch (error) {
+            } catch (error) {
                 console.error("Error in property change listener:", error);
             }
         });

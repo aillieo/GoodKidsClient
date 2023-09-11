@@ -1,11 +1,11 @@
-import { Action0, Action1 } from "./Action";
-import { Delegate, Handle } from "./Delegate";
-export type PropertyEqualityFn<T> = (newValue: T, oldValue: T) => boolean;
+import { type Action0, type Action1 } from "./Action";
+import { Delegate, type Handle } from "./Delegate";
+export type PropertyEqualityFn<T> = (newValue: T, oldValue: T) => boolean
 
 class Property<T> {
     private value: T;
-    private listeners: Delegate<T>;
-    private equalityFn: PropertyEqualityFn<T>;
+    private readonly listeners: Delegate<T>;
+    private readonly equalityFn: PropertyEqualityFn<T>;
 
     constructor(initialValue: T, equalityFn?: PropertyEqualityFn<T>) {
         this.value = initialValue;

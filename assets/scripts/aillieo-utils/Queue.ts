@@ -12,7 +12,7 @@ class Queue<T> {
 
     private resize(newCapacity: number): void {
         const newData: T[] = new Array<T>(newCapacity);
-        for (let i = 0, j = this.head; i < this.count(); i ++, j = (j + 1) % this.capacity) {
+        for (let i = 0, j = this.head; i < this.count(); i++, j = (j + 1) % this.capacity) {
             newData[i] = this.data[j];
         }
         this.data = newData;

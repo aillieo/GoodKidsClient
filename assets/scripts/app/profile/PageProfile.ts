@@ -1,9 +1,8 @@
-import { _decorator, Component, Node, Label, log, Button, EditBox } from "cc";
-import { Binder } from "../../aillieo-utils/Binder";
-import { Property } from "../../aillieo-utils/Property";
+import { _decorator, Label, Button, EditBox } from "cc";
 import { BasePage } from "../main/BasePage";
-import { AppData, DataManager, TokenData, UserData } from "../model/DataManager";
-import { HttpHelper } from "../../aillieo-utils/HttpHelper";
+import { TokenData } from "../misc/Session";
+import { Utils } from "../misc/Utils";
+import { DataManager } from "../model/DataManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("PageProfile")
@@ -33,8 +32,8 @@ export class PageProfile extends BasePage {
         this.editBoxPassword!.string = localStorage.getItem("password") || "";
 
         const that = this;
-        this.binder.BindV_ButtonClick(this.buttonRegister!, () => that.onRegisterClick());
-        this.binder.BindV_ButtonClick(this.buttonLogin!, () => that.onLoginClick());
+        this.binder.bindV_ButtonClick(this.buttonRegister!, () => that.onRegisterClick());
+        this.binder.bindV_ButtonClick(this.buttonLogin!, () => that.onLoginClick());
     }
 
     protected onDisable():void {

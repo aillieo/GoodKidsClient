@@ -11,24 +11,31 @@ class LinkedListNode<T> {
     }
 }
 
-class LinkedList<T> {
+class LinkedList<T> implements Iterable<T> {
     private head: LinkedListNode<T> | null = null;
     private tail: LinkedListNode<T> | null = null;
 
     public count(): number {
-        return 0;
+        let count = 0;
+        let current = this.head;
+        while (current) {
+            count++;
+            current = current.next;
+        }
+        return count;
     }
 
     public add(value: T): LinkedListNode<T> {
         const newNode = new LinkedListNode<T>(value);
+        newNode.list = this;
 
         if (!this.head) {
             this.head = newNode;
             this.tail = newNode;
         } else {
             newNode.prev = this.tail;
-      this.tail!.next = newNode;
-      this.tail = newNode;
+            this.tail!.next = newNode;
+            this.tail = newNode;
         }
 
         return newNode;
@@ -51,6 +58,7 @@ class LinkedList<T> {
             this.tail = node.prev;
         }
 
+        node.list = null;
         return true;
     }
 
@@ -73,6 +81,21 @@ class LinkedList<T> {
             callback(current.value);
             current = current.next;
         }
+    }
+
+    public [Symbol.iterator](): Iterator<T> {
+        let current = this.head;
+        return {
+            next: (): IteratorResult<T> => {
+                if (current === null) {
+                    return { value: undefined, done: true };
+                } else {
+                    const value = current.value;
+                    current = current.next;
+                    return { value, done: false };
+                }
+            }
+        };
     }
 }
 

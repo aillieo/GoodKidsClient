@@ -1,16 +1,26 @@
 import { Button, Toggle, Node, Label } from "cc";
-import { Binder } from "../Binder";
+import { Action1 } from "../Action";
+import { Binder, BinderLike } from "../Binder";
+import { Delegate } from "../Delegate";
 import { Property } from "../Property";
 
 export type CallbackRecord = {
     node:Node,
-    eventName:string|number,
+    eventName:string,
     callback: ()=>void,
 }
 
-export class UIBinder {
+export class UIBinder implements BinderLike {
     private binder : Binder = new Binder();
     private records : CallbackRecord[] = new Array<CallbackRecord>(0);
+
+    public bindProperty<T>(prop: Property<T>, listener: Action1<T>): void {
+        this.binder.bindProperty(prop, listener);
+    }
+
+    public bindEvent<T>(evt: Delegate<T>, listener: Action1<T>): void {
+        this.binder.bindEvent(evt, listener);
+    }
 
     public clear():void {
         this.binder.clear();
@@ -19,11 +29,11 @@ export class UIBinder {
         }
     }
 
-    public BindM2V_ToggleIsOn(prop: Property<boolean>, toggle: Toggle) {
+    public bindM2V_ToggleIsOn(prop: Property<boolean>, toggle: Toggle) {
         this.binder.bindProperty(prop, (b) => { toggle.isChecked = b; });
     }
 
-    public BindM2V_Number_LabelString(prop: Property<number>, label: Label, mapper?: (n:number)=>string) {
+    public bindM2V_Number_LabelString(prop: Property<number>, label: Label, mapper?: (n:number)=>string) {
         if (mapper === undefined) {
             this.binder.bindProperty(prop, (n) => { label.string = n.toString(); });
         } else {
@@ -31,7 +41,7 @@ export class UIBinder {
         }
     }
 
-    public BindM2V_String_LabelString(prop: Property<string>, label: Label, mapper?: (s:string)=>string) {
+    public bindM2V_String_LabelString(prop: Property<string>, label: Label, mapper?: (s:string)=>string) {
         if (mapper === undefined) {
             this.binder.bindProperty(prop, (s) => { label.string = s; });
         } else {
@@ -39,7 +49,7 @@ export class UIBinder {
         }
     }
 
-    public BindV_ButtonClick(button: Button, f:()=>void) {
+    public bindV_ButtonClick(button: Button, f:()=>void) {
         // todo 换用Delegate
         const r : CallbackRecord = {
             node: button.node,
@@ -51,7 +61,7 @@ export class UIBinder {
         button.node.on(Button.EventType.CLICK, f);
     }
 
-    public BindV2M_ToggleIsOn(toggle: Toggle, prop: Property<boolean>) {
+    public bindV2M_ToggleIsOn(toggle: Toggle, prop: Property<boolean>) {
         // todo 换用Delegate
         const f = () => { prop.set(toggle.isChecked); };
         const r : CallbackRecord = {

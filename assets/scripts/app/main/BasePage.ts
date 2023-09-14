@@ -1,13 +1,10 @@
-import { _decorator, Component, Node, Label, log, Button } from "cc";
-import { Property } from "../../aillieo-utils/Property";
+import { _decorator, Component } from "cc";
 import { UIBinder } from "../../aillieo-utils/ui/UIBinder";
-import { AppManager } from "../AppManager";
-const { ccclass, property } = _decorator;
+import { BaseView } from "../uiframework/BaseView";
+const { ccclass } = _decorator;
 
 @ccclass("BasePage")
-export class BasePage extends Component {
-    protected binder : UIBinder = new UIBinder();
-
+export class BasePage extends BaseView {
     onShow() : void {
 
     }

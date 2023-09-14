@@ -1,20 +1,35 @@
-import { _decorator, Component, Node } from "cc";
+import { Node, director, UITransform, view } from "cc";
 import { Singleton } from "../../aillieo-utils/Singleton";
-import { Property } from "../../aillieo-utils/Property";
-import { utils } from "../utils/utils";
+import { Utils } from "../misc/Utils";
 import { BaseWindow } from "./BaseWindow";
-
-const { ccclass, property } = _decorator;
+import { Ctor, UIConfig } from "./UIDefine";
 
 // eslint-disable-next-line no-use-before-define
 export class UIManager extends Singleton<UIManager>() {
-    public async Open(name:string):Promise<BaseWindow|null> {
-        console.log(name);
-        const node : Node = await utils.loadPrefab("ui", name);
-        return node.getComponent(BaseWindow);
+    private root : Node | null = null;
+
+    protected constructor() {
+        super();
+
+        const canvas : Node|null = director.getScene()!.getChildByName("Canvas");
+        let UIRoot = canvas!.getChildByName("UIRoot");
+        if (UIRoot == null) {
+            UIRoot = new Node("UIRoot");
+            UIRoot.addComponent(UITransform);
+            UIRoot.setParent(canvas, false);
+        }
+
+        this.root = UIRoot;
     }
 
-    public Close(window:BaseWindow) : void {
+    public async open<T extends BaseWindow>(viewClass: Ctor<T>):Promise<T|null> {
+        const uiCfg : UIConfig = (viewClass.prototype).__uiCfg;
+        const node : Node = await Utils.loadPrefab(uiCfg.bundleName, uiCfg.assetName);
+        this.root!.addChild(node);
+        return node.getComponent(BaseWindow) as T;
+    }
+
+    public close(window:BaseWindow) : void {
         window.node.destroy();
     }
 }

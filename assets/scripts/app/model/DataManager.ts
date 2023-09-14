@@ -1,80 +1,37 @@
-import { _decorator, Component, Node } from "cc";
 import { AppManager } from "../AppManager";
 import { Singleton } from "../../aillieo-utils/Singleton";
-import { HttpHelper } from "../../aillieo-utils/HttpHelper";
-const { ccclass, property } = _decorator;
-
-export type AppData = {
-    name : string,
-    age : number,
-    photo : string,
-}
-
-export type UserData = {
-    name : string,
-}
-
-export type LoginData = {
-    username : string,
-    password : string,
-}
-
-export type TokenData = {
-    token : string,
-    uid : number,
-}
+import { Session } from "../misc/Session";
 
 // eslint-disable-next-line no-use-before-define
 export class DataManager extends Singleton<DataManager>() {
-    private data : AppData;
-
-    private token : string|undefined;
-    private uid : number|undefined;
+    private session:Session |undefined;
 
     protected constructor() {
         super();
-        this.data = {
-            name: "a",
-            age: 0,
-            photo: "a"
-        };
-    }
-
-    async getData() : Promise<AppData> {
-        return this.data;
-    }
-
-    async getUserData(u:string, p:string, isReg:boolean) : Promise<TokenData> {
-        const login = {
-            username: u,
-            password: p
-        };
-
         const url = AppManager.getInstance().url;
-        const fullURL = isReg ? (url + "/register") : (url + "/login");
-        const tokenData = await HttpHelper.Post<LoginData, TokenData>(fullURL, login);
-
-        this.uid = tokenData.uid;
-        this.token = tokenData.token;
-
-        return tokenData;
+        this.session = Session.Create(url);
     }
 
-    async getDailyTasks() : Promise<object> {
-        const url = AppManager.getInstance().url;
-        return HttpHelper.Get<object>(url + "/dailytask/", {
-        }, {
-            Authorization: `Bearer ${this.token}`
+    async getUserData(u:string, p:string, isReg:boolean) : Promise<boolean> {
+        if (isReg) {
+            return this.session!.register(u, p);
+        } else {
+            return this.session!.login(u, p);
+        }
+    }
+
+    async getDailyTasks() : Promise<any[]> {
+        return this.session!.get<any[]>("/dailytask/");
+    }
+
+    async createTask(taskName:string, taskDes:string) : Promise<object> {
+        return this.session!.post("/dailytask/", {
+            taskName,
+            taskDes
         });
     }
 
-    async createTask() : Promise<object> {
-        const url = AppManager.getInstance().url;
-        return HttpHelper.Post<object, object>(url + "/dailytask/", {
-            taskName: "abc",
-            taskDes: "desc"
-        }, {
-            Authorization: `Bearer ${this.token}`
-        });
+    async completeTask(taskId:number) : Promise<object> {
+        return this.session!.post(`/dailytask/${taskId}/complete`, { note: "test note" });
     }
 }

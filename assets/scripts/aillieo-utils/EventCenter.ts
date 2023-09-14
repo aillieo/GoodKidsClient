@@ -1,34 +1,27 @@
-import { Delegate, type Handle } from "./Delegate";
+import { type Handle } from "./Delegate";
 import { type Action1 } from "./Action";
+import { EventEmitter } from "./EventEmitter";
 
 export class EventCenter {
-    private map: Map<string, Delegate<unknown>>;
+    private static eventEmitter : EventEmitter = new EventEmitter();
 
-    constructor() {
-        this.map = new Map<string, Delegate<unknown>>();
+    public static on(evt: string, callback: Action1<unknown>): Handle {
+        return this.eventEmitter.on(evt, callback);
     }
 
-    public on(evt: string, callback: Action1<unknown>): Handle {
-        let del: Delegate<unknown>;
-        if (!this.map.has(evt)) {
-            del = new Delegate<unknown>();
-            this.map[evt] = del;
-        } else {
-            del = this.map[evt];
-        }
-
-        return del.add(callback);
+    public static once(evt: string, callback: Action1<unknown>) : Handle {
+        return this.eventEmitter.once(evt, callback);
     }
 
-    public off(evt: string, handle: Handle): void {
-        let del: Delegate<unknown>;
-        if (!this.map.has(evt)) {
-            del = new Delegate<unknown>();
-            this.map[evt] = del;
-        } else {
-            del = this.map[evt];
-        }
+    public static off(evt: string, callback: Action1<unknown>): void {
+        this.eventEmitter.off(evt, callback);
+    }
 
-        del.remove(handle);
+    public static allOff(evt?: string) : void {
+        this.eventEmitter.allOff(evt);
+    }
+
+    public static emit(evt: string, args: unknown) : void {
+        this.eventEmitter.emit(evt, args);
     }
 }

@@ -1,9 +1,10 @@
 export function Singleton<T>() {
     class Singleton {
+        // eslint-disable-next-line no-useless-constructor
         protected constructor() {}
 
         // eslint-disable-next-line no-use-before-define
-        private static instance: Singleton = null;
+        private static instance: Singleton|null = null;
 
         public static getInstance(): T {
             if (Singleton.instance == null) {

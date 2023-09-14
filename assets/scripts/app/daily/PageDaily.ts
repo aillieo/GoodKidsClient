@@ -1,8 +1,8 @@
-import { _decorator, Component, Node, Label, log, Button, Prefab, instantiate, size, Size, Vec3 } from "cc";
+import { _decorator, Label, Button, Prefab, EditBox } from "cc";
 import { DynamicScrollView } from "../../aillieo-utils/ui/DynamicScrollView";
 import { BasePage } from "../main/BasePage";
-import { DailyTaskItem } from "./DailyTaskItem";
 import { DataManager } from "../model/DataManager";
+import { DailyTaskItem } from "./DailyTaskItem";
 const { ccclass, property } = _decorator;
 
 @ccclass("PageDaily")
@@ -22,6 +22,12 @@ export class PageDaily extends BasePage {
     @property(Button)
         buttonCreate: Button|null = null;
 
+    @property(EditBox)
+        editBoxTaskName: EditBox|null = null;
+
+    @property(EditBox)
+        editBoxTaskDes: EditBox|null = null;
+
     onLoad() {
 
     }
@@ -35,12 +41,14 @@ export class PageDaily extends BasePage {
         this.loadData();
 
         const that = this;
-        this.binder.BindV_ButtonClick(this.buttonCreate!, () => that.onCreateTaskClick());
+        this.binder.bindV_ButtonClick(this.buttonCreate!, () => that.onCreateTaskClick());
     }
 
     protected onDisable() {
         super.onDisable?.();
         this.binder.clear();
+
+        this.listView!.ResetAllDelegates();
     }
 
     private async loadData() {
@@ -48,9 +56,16 @@ export class PageDaily extends BasePage {
 
         const tasks = await dm.getDailyTasks();
         console.log(tasks);
+        this.listView!.SetItemCountFunc(() => tasks.length);
+        this.listView!.SetUpdateFunc((idx, item) => {
+            item.node.getComponent(DailyTaskItem)?.setData(tasks[idx]);
+        });
+        this.listView!.UpdateData();
     }
 
     private onCreateTaskClick() :void {
-        DataManager.getInstance().createTask();
+        DataManager.getInstance().createTask(
+            this.editBoxTaskName?.string,
+            this.editBoxTaskDes?.string);
     }
 }

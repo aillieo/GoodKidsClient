@@ -1,7 +1,6 @@
-import { _decorator, Component, Node, Label, log, Button, Toggle, EventHandler } from "cc";
+import { _decorator, Component, Toggle } from "cc";
 import { Binder } from "../../aillieo-utils/Binder";
 import { Property } from "../../aillieo-utils/Property";
-import { AppManager } from "../AppManager";
 import { BasePage } from "./BasePage";
 const { ccclass, property } = _decorator;
 
@@ -23,11 +22,14 @@ export class UIMainView extends Component {
 
     private state : boolean;
 
-    onLoad() {
+    constructor() {
+        super();
         this.prop = new Property<number>(0);
         this.binder = new Binder();
         this.state = false;
+    }
 
+    onLoad() {
         this.schedule(() => {
             this.state = !this.state;
         }, 3);

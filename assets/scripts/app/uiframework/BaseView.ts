@@ -6,4 +6,9 @@ const { ccclass } = _decorator;
 @ccclass("BaseView")
 export class BaseView extends Component {
     protected binder : UIBinder = new UIBinder();
+
+    protected onDisable():void {
+        this.binder.clear();
+        super.onDisable?.();
+    }
 }

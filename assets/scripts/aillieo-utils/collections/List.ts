@@ -1,10 +1,10 @@
-export class List<T> implements Iterator<T> {
+export class List<T> implements Iterable<T> {
     private capacity: number;
     private length: number;
     private elements: T[];
 
     constructor() {
-        this.capacity = 10; // 初始容量为 10
+        this.capacity = 8;
         this.length = 0;
         this.elements = new Array<T>(this.capacity);
     }
@@ -29,24 +29,18 @@ export class List<T> implements Iterator<T> {
         this.elements = newElements;
     }
 
-    // 实现 Iterator<T> 接口
-    private iteratorIndex = 0;
-
-    public next(): IteratorResult<T> {
-        if (this.iteratorIndex < this.length) {
-            const value = this.elements[this.iteratorIndex];
-            this.iteratorIndex++;
-            return {
-                value, done: false
-            };
-        } else {
-            return {
-                value: undefined, done: true
-            };
-        }
-    }
-
     public [Symbol.iterator](): Iterator<T> {
-        return this;
+        let index = 0;
+        return {
+            next: (): IteratorResult<T> => {
+                if (index < this.length) {
+                    const value = this.elements[index];
+                    index++;
+                    return { value, done: false };
+                } else {
+                    return { value: undefined, done: true };
+                }
+            }
+        };
     }
 }

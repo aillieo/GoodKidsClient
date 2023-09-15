@@ -2,6 +2,7 @@ import { _decorator, Component, Toggle } from "cc";
 import { Binder } from "../../aillieo-utils/Binder";
 import { Property } from "../../aillieo-utils/Property";
 import { BasePage } from "./BasePage";
+import { Logger } from "../misc/Logger";
 const { ccclass, property } = _decorator;
 
 @ccclass("UIMainView")
@@ -38,7 +39,7 @@ export class UIMainView extends Component {
     protected onEnable() : void {
         this.binder.bindProperty(this.prop, () => {
             const v = this.prop.get();
-            console.log(v);
+            Logger.get(UIMainView).log(v);
         });
 
         for (let i = 0; i < 5; ++i) {

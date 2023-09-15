@@ -1,8 +1,7 @@
 import { _decorator, Label, Button, EditBox } from "cc";
 import { BasePage } from "../main/BasePage";
-import { TokenData } from "../misc/Session";
-import { Utils } from "../misc/Utils";
 import { DataManager } from "../model/DataManager";
+import { Logger } from "../misc/Logger";
 const { ccclass, property } = _decorator;
 
 @ccclass("PageProfile")
@@ -46,15 +45,15 @@ export class PageProfile extends BasePage {
         const u:string = this.editBoxName!.string;
         const p:string = this.editBoxPassword!.string;
 
-        const data : TokenData = await dm.getUserData(u, p, isReg);
-        console.log(data);
+        const succ : boolean = await dm.getUserData(u, p, isReg);
+        Logger.get(PageProfile).log(succ);
     }
 
     private onRegisterClick():void {
         localStorage.setItem("username", this.editBoxName!.string);
         localStorage.setItem("password", this.editBoxPassword!.string);
 
-        console.log(this);
+        Logger.get(PageProfile).log(this);
 
         this.loadData(true);
     }
@@ -63,7 +62,7 @@ export class PageProfile extends BasePage {
         localStorage.setItem("username", this.editBoxName!.string);
         localStorage.setItem("password", this.editBoxPassword!.string);
 
-        console.log(this);
+        Logger.get(PageProfile).log(this);
 
         this.loadData(false);
     }

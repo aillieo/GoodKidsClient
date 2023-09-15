@@ -1,5 +1,5 @@
 import { _decorator, Label, Button } from "cc";
-import { DataManager } from "../model/DataManager";
+import { DailyTaskModel, TaskData } from "../model/DailyTaskModel";
 import { BaseView } from "../uiframework/BaseView";
 const { ccclass, property } = _decorator;
 
@@ -23,13 +23,17 @@ export class DailyTaskItem extends BaseView {
         this.binder.bindV_ButtonClick(this.buttonCreate!, () => that.onCompleteClick());
     }
 
-    public setData(taskData: object):void {
+    public setData(taskData: TaskData):void {
         this.taskId = taskData.id;
         this.taskName.string = taskData.taskName;
         this.taskDes.string = taskData.taskDes;
     }
 
     private onCompleteClick() {
-        DataManager.getInstance().completeTask(this.taskId);
+        DailyTaskModel.getInstance().completeTask(this.taskId).then((succ) => {
+            if (succ) {
+                DailyTaskModel.getInstance().getDailyTasks();
+            }
+        });
     }
 }

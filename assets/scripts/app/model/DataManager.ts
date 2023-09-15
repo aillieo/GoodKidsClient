@@ -1,10 +1,15 @@
 import { AppManager } from "../AppManager";
 import { Singleton } from "../../aillieo-utils/Singleton";
 import { Session } from "../misc/Session";
+import { Property } from "../../aillieo-utils/Property";
+
+export type UserData= {
+    username :string;
+}
 
 // eslint-disable-next-line no-use-before-define
 export class DataManager extends Singleton<DataManager>() {
-    private session:Session |undefined;
+    public readonly session:Session |undefined;
 
     protected constructor() {
         super();
@@ -12,26 +17,13 @@ export class DataManager extends Singleton<DataManager>() {
         this.session = Session.Create(url);
     }
 
+    public readonly userData:Property<UserData|undefined> = new Property<UserData|undefined>(undefined);
+
     async getUserData(u:string, p:string, isReg:boolean) : Promise<boolean> {
         if (isReg) {
             return this.session!.register(u, p);
         } else {
             return this.session!.login(u, p);
         }
-    }
-
-    async getDailyTasks() : Promise<any[]> {
-        return this.session!.get<any[]>("/dailytask/");
-    }
-
-    async createTask(taskName:string, taskDes:string) : Promise<object> {
-        return this.session!.post("/dailytask/", {
-            taskName,
-            taskDes
-        });
-    }
-
-    async completeTask(taskId:number) : Promise<object> {
-        return this.session!.post(`/dailytask/${taskId}/complete`, { note: "test note" });
     }
 }

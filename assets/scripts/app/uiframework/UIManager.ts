@@ -1,8 +1,11 @@
-import { Node, director, UITransform, view } from "cc";
+import { Node, director, UITransform } from "cc";
 import { Singleton } from "../../aillieo-utils/Singleton";
-import { Utils } from "../misc/Utils";
+import { ResourceManager } from "../misc/ResourceManager";
 import { BaseWindow } from "./BaseWindow";
-import { Ctor, UIConfig } from "./UIDefine";
+import { UIConfig } from "./UIDefine";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Constructor<T = unknown> = new (...args: any[]) => T;
 
 // eslint-disable-next-line no-use-before-define
 export class UIManager extends Singleton<UIManager>() {
@@ -22,14 +25,14 @@ export class UIManager extends Singleton<UIManager>() {
         this.root = UIRoot;
     }
 
-    public async open<T extends BaseWindow>(viewClass: Ctor<T>):Promise<T|null> {
+    public async open<T extends BaseWindow>(viewClass: Constructor<T>):Promise<T|null> {
         const uiCfg : UIConfig = (viewClass.prototype).__uiCfg;
-        const node : Node = await Utils.loadPrefab(uiCfg.bundleName, uiCfg.assetName);
+        const node : Node = await ResourceManager.loadPrefab(uiCfg.bundleName, uiCfg.assetName);
         this.root!.addChild(node);
         return node.getComponent(BaseWindow) as T;
     }
 
     public close(window:BaseWindow) : void {
-        window.node.destroy();
+        ResourceManager.release(window.node);
     }
 }

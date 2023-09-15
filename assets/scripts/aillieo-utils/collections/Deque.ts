@@ -1,4 +1,4 @@
-export class Deque<T> implements Iterator<T> {
+export class Deque<T> implements Iterable<T> {
     private capacity: number;
     private length: number;
     private elements: T[];
@@ -6,7 +6,7 @@ export class Deque<T> implements Iterator<T> {
     private rearIndex: number;
 
     constructor() {
-        this.capacity = 10; // 初始容量为 10
+        this.capacity = 8;
         this.length = 0;
         this.elements = new Array<T>(this.capacity);
         this.frontIndex = 0;
@@ -48,20 +48,18 @@ export class Deque<T> implements Iterator<T> {
         this.rearIndex = this.length;
     }
 
-    // 实现 Iterator<T> 接口
-    private iteratorIndex = this.frontIndex;
-
-    public next(): IteratorResult<T> {
-        if (this.iteratorIndex !== this.rearIndex) {
-            const value = this.elements[this.iteratorIndex];
-            this.iteratorIndex = (this.iteratorIndex + 1) % this.capacity;
-            return { value, done: false };
-        } else {
-            return { value: undefined, done: true };
-        }
-    }
-
     public [Symbol.iterator](): Iterator<T> {
-        return this;
+        let index = this.frontIndex;
+        return {
+            next: (): IteratorResult<T> => {
+                if (index !== this.rearIndex) {
+                    const value = this.elements[index];
+                    index = (index + 1) % this.capacity;
+                    return { value, done: false };
+                } else {
+                    return { value: undefined, done: true };
+                }
+            }
+        };
     }
 }

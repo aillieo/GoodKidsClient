@@ -18,6 +18,15 @@
         "promise"
     ],
     "rules": {
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            {
+                "args": "none",
+                "caughtErrors": "none",
+                "ignoreRestSiblings": true,
+                "vars": "all"
+            }
+        ],
         "no-var": "warn",
         "object-shorthand": [
             "warn",
@@ -366,15 +375,7 @@
                 "allowTaggedTemplates": true
             }
         ],
-        "no-unused-vars": [
-            "error",
-            {
-                "args": "none",
-                "caughtErrors": "none",
-                "ignoreRestSiblings": true,
-                "vars": "all"
-            }
-        ],
+        "no-unused-vars": "off",
         "no-use-before-define": [
             "error",
             {

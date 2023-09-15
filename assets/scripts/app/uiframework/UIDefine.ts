@@ -1,7 +1,5 @@
-export interface Ctor<T> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new (...args: any[]): T;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Constructor<T = unknown> = new (...args: any[]) => T;
 
 export type UIConfig = {
     bundleName : string;
@@ -9,7 +7,7 @@ export type UIConfig = {
 }
 
 export function UIDefine<T>(uiCfg: UIConfig) {
-    return function(target: Ctor<T>) {
+    return function(target: Constructor<T>) {
         target.prototype.__uiCfg = uiCfg;
     };
 }

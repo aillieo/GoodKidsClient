@@ -54,13 +54,15 @@ export class HttpHelper {
 
     private static getURL(
         baseUrl: string,
-        params: Record<string, string>
+        params?: Record<string, string>
     ): string {
         const url = new URL(baseUrl);
         const searchParams = new URLSearchParams();
 
-        for (const key in params) {
-            searchParams.append(key, params[key]);
+        if (params) {
+            for (const key in params) {
+                searchParams.append(key, params[key]);
+            }
         }
 
         url.search = searchParams.toString();

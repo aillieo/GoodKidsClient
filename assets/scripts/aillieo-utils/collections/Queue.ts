@@ -8,6 +8,7 @@ class Queue<T> {
         this.data = new Array<T>(0);
         this.head = 0;
         this.tail = 0;
+        this.capacity = 0;
     }
 
     private resize(newCapacity: number): void {

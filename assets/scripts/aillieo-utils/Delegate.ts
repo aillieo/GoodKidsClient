@@ -1,5 +1,5 @@
 import { type Action1 } from "./Action";
-import { LinkedList, type LinkedListNode } from "./LinkedList";
+import { LinkedList, type LinkedListNode } from "./collections/LinkedList";
 
 export class Handle {
     private readonly node: LinkedListNode<unknown>;

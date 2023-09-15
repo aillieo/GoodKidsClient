@@ -2,6 +2,7 @@ import { Label, Tween, tween, Vec3, _decorator, Node } from "cc";
 import { Utils } from "../misc/Utils";
 import { BaseWindow } from "./BaseWindow";
 import { UIDefine } from "./UIDefine";
+import { Logger } from "../misc/Logger";
 const { ccclass, property } = _decorator;
 
 @UIDefine({ bundleName: "prefabs", assetName: "ui/UIToastView" })
@@ -11,7 +12,7 @@ export class UIToastView extends BaseWindow {
         labelMsg: Label|null = null;
 
     public async showMessage(message:string):Promise<void> {
-        console.log(message);
+        Logger.get(UIToastView).log(message);
         this.labelMsg!.string = message;
         this.node.scale = new Vec3(1, 0, 1);
 

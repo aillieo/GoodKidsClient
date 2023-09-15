@@ -1,56 +1,9 @@
-import { assetManager, AssetManager, SpriteFrame, Asset, Prefab, instantiate, Node, Tween, tween, Vec3 } from "cc";
+import { Tween } from "cc";
 import { UIDialogueView } from "../uiframework/UIDialogueView";
 import { UIManager } from "../uiframework/UIManager";
 import { UIToastView } from "../uiframework/UIToastView";
 
 export class Utils {
-    public static async loadRes<T extends Asset>(name:string) : Promise<T> {
-        return new Promise((resolve, reject) => {
-            assetManager.loadAny<T>(name, (err, resAsset) => {
-                err && reject(err);
-                resolve(resAsset);
-            });
-        });
-    }
-
-    public static async loadBundle(name:string) : Promise<AssetManager.Bundle> {
-        return new Promise((resolve, reject) => {
-            assetManager.loadBundle(name, (err, data) => {
-                err && reject(err);
-                resolve(data);
-            });
-        });
-    }
-
-    public static async loadSpriteFrame(bundleName:string, assetName:string) : Promise<SpriteFrame> {
-        let bundle = assetManager.getBundle(bundleName);
-        if (bundle == null) {
-            bundle = await this.loadBundle(bundleName);
-        }
-
-        return new Promise((resolve, reject) => {
-            bundle?.load(assetName, SpriteFrame, (err, data) => {
-                err && reject(err);
-                resolve(data);
-            });
-        });
-    }
-
-    public static async loadPrefab(bundleName:string, assetName:string) : Promise<Node> {
-        let bundle = assetManager.getBundle(bundleName);
-        if (bundle == null) {
-            bundle = await this.loadBundle(bundleName);
-        }
-
-        return new Promise((resolve, reject) => {
-            bundle?.load(assetName, Prefab, (err, data) => {
-                err && reject(err);
-                const node : Node = instantiate(data);
-                resolve(node);
-            });
-        });
-    }
-
     public static formatTime(timestamp:number) : string {
         const date = new Date(timestamp);
         return date.toLocaleString();
@@ -130,7 +83,7 @@ export class Utils {
     }
 
     public static async startTweenAsync(tween: Tween<unknown>): Promise<void> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             tween.union().call(resolve).start();
         });
     }

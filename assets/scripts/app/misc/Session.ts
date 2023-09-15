@@ -1,16 +1,6 @@
 import { HttpHelper, HttpError } from "../../aillieo-utils/HttpHelper";
 import { Utils } from "./Utils";
 
-export type AppData = {
-    name : string,
-    age : number,
-    photo : string,
-}
-
-export type UserData = {
-    name : string,
-}
-
 export type LoginData = {
     username : string,
     password : string,

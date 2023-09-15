@@ -1,5 +1,4 @@
-import { _decorator, Component } from "cc";
-import { UIBinder } from "../../aillieo-utils/ui/UIBinder";
+import { _decorator } from "cc";
 import { BaseView } from "../uiframework/BaseView";
 const { ccclass } = _decorator;
 

@@ -1,15 +1,7 @@
 import { HttpHelper, HttpError } from "../../aillieo-utils/HttpHelper";
+import { Login } from "../schemas/Login";
+import { Token } from "../schemas/Token";
 import { Utils } from "./Utils";
-
-export type LoginData = {
-    username : string,
-    password : string,
-}
-
-export type TokenData = {
-    token : string,
-    uid : number,
-}
 
 export class Session {
     public static Create(server: string) : Session {
@@ -25,7 +17,7 @@ export class Session {
 
     public async login(username: string, password:string) : Promise<boolean> {
         try {
-            const response = await HttpHelper.post<LoginData, TokenData>(
+            const response = await HttpHelper.post<Login, Token>(
                 this.server + "/login",
                 { username, password });
             this.token = response.token;
@@ -40,7 +32,7 @@ export class Session {
 
     public async register(username: string, password:string) : Promise<boolean> {
         try {
-            const response = await HttpHelper.post<LoginData, TokenData>(
+            const response = await HttpHelper.post<Login, Token>(
                 this.server + "/register",
                 { username, password });
             this.token = response.token;

@@ -4,6 +4,7 @@ import { BasePage } from "../main/BasePage";
 import { DailyTaskModel } from "../model/DailyTaskModel";
 import { DailyTaskItem } from "./DailyTaskItem";
 import { Logger } from "../misc/Logger";
+import { Models } from "../model/Models";
 const { ccclass, property } = _decorator;
 
 @ccclass("PageDaily")
@@ -34,9 +35,9 @@ export class PageDaily extends BasePage {
 
         const that = this;
         this.binder.bindV_ButtonClick(this.buttonCreate!, () => that.onCreateTaskClick());
-        this.binder.bindProperty(DailyTaskModel.getInstance().tasks, () => that.onTasksUpdate());
+        this.binder.bindProperty(Models.get(DailyTaskModel).tasks, () => that.onTasksUpdate());
 
-        DailyTaskModel.getInstance().getDailyTasks();
+        Models.get(DailyTaskModel).getDailyTasks();
     }
 
     protected onDisable() {
@@ -47,7 +48,7 @@ export class PageDaily extends BasePage {
     }
 
     private onTasksUpdate():void {
-        const tasks = DailyTaskModel.getInstance().tasks.get();
+        const tasks = Models.get(DailyTaskModel).tasks.get();
         Logger.get(PageDaily).log(tasks);
         this.listView!.SetItemCountFunc(() => tasks.length);
         this.listView!.SetUpdateFunc((idx, item) => {
@@ -57,11 +58,11 @@ export class PageDaily extends BasePage {
     }
 
     private onCreateTaskClick() :void {
-        DailyTaskModel.getInstance().createTask(
+        Models.get(DailyTaskModel).createTask(
             this.editBoxTaskName!.string,
             this.editBoxTaskDes!.string).then((succ) => {
             if (succ) {
-                DailyTaskModel.getInstance().getDailyTasks();
+                Models.get(DailyTaskModel).getDailyTasks();
             }
         });
     }

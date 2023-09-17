@@ -8,8 +8,8 @@ export type UserData= {
 }
 
 // eslint-disable-next-line no-use-before-define
-export class DataManager extends Singleton<DataManager>() {
-    public readonly session:Session |undefined;
+export class SessionManager extends Singleton<SessionManager>() {
+    public readonly session:Session;
 
     protected constructor() {
         super();

@@ -1,6 +1,6 @@
 import { _decorator, Label, Button, EditBox } from "cc";
 import { BasePage } from "../main/BasePage";
-import { DataManager } from "../model/DataManager";
+import { SessionManager } from "../misc/SessionManager";
 import { Logger } from "../misc/Logger";
 const { ccclass, property } = _decorator;
 
@@ -40,7 +40,7 @@ export class PageProfile extends BasePage {
     }
 
     private async loadData(isReg:boolean) {
-        const dm : DataManager = DataManager.getInstance();
+        const dm : SessionManager = SessionManager.getInstance();
 
         const u:string = this.editBoxName!.string;
         const p:string = this.editBoxPassword!.string;

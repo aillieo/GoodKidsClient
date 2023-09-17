@@ -1,33 +1,33 @@
 import { Delegate, type Handle } from "./Delegate";
 import { type Action1 } from "./Action";
-type EventName = string|number
 
-export class EventEmitter {
-    private map: Map<EventName, Delegate<unknown>> = new Map();
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export class EventEmitter<TEvent=string|number, TArg=any> {
+    private map: Map<TEvent, Delegate<TArg>> = new Map();
 
-    public on(evt: EventName, callback: Action1<unknown>) : Handle {
-        let del: Delegate<unknown>|undefined = this.map.get(evt);
+    public on(evt: TEvent, callback: Action1<TArg>) : Handle {
+        let del: Delegate<TArg>|undefined = this.map.get(evt);
         if (!del) {
-            del = new Delegate<unknown>();
+            del = new Delegate<TArg>();
             this.map.set(evt, del);
         }
         return del.add(callback);
     }
 
-    public once(evt: EventName, callback: Action1<unknown>) : Handle {
-        const f: Action1<unknown> = (args) => {
+    public once(evt: TEvent, callback: Action1<TArg>) : Handle {
+        const f: Action1<TArg> = (args) => {
             callback(args);
             this.off(evt, f);
         };
         return this.on(evt, f);
     }
 
-    public off(evt: EventName, callback: Action1<unknown>) : void {
-        const del: Delegate<unknown>|undefined = this.map.get(evt);
+    public off(evt: TEvent, callback: Action1<TArg>) : void {
+        const del: Delegate<TArg>|undefined = this.map.get(evt);
         del && del.removeValue(callback);
     }
 
-    public allOff(evt?: EventName) : void {
+    public allOff(evt?: TEvent) : void {
         if (!evt) {
             this.map.clear();
             return;
@@ -36,8 +36,8 @@ export class EventEmitter {
         this.map.delete(evt);
     }
 
-    public emit(evt: EventName, args: unknown) : void {
-        const del: Delegate<unknown>|undefined = this.map.get(evt);
+    public emit(evt: TEvent, args: TArg) : void {
+        const del: Delegate<TArg>|undefined = this.map.get(evt);
         if (!del) return;
         del.invoke(args);
     }

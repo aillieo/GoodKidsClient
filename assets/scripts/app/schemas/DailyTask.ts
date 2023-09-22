@@ -9,5 +9,11 @@ export interface DailyTask {
   id: number;
   taskName: string;
   taskDes: string;
+  lastRecord: CompletionRecord | null;
+  [k: string]: unknown;
+}
+export interface CompletionRecord {
+  time: number;
+  note: string | null;
   [k: string]: unknown;
 }

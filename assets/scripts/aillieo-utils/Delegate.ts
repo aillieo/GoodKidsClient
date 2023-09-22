@@ -1,5 +1,7 @@
-import { type Action1 } from "./Action";
 import { LinkedList, type LinkedListNode } from "./collections/LinkedList";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Action<T = any> = (value: T) => void
 
 export class Handle {
     private readonly node: LinkedListNode<unknown>;
@@ -18,13 +20,13 @@ export class Handle {
 }
 
 export class Delegate<T> {
-    private readonly listeners: LinkedList<Action1<T>>;
+    private readonly listeners: LinkedList<Action<T>>;
 
     constructor() {
-        this.listeners = new LinkedList<Action1<T>>();
+        this.listeners = new LinkedList<Action<T>>();
     }
 
-    public add(listener: Action1<T>): Handle {
+    public add(listener: Action<T>): Handle {
         const node = this.listeners.add(listener);
         return new Handle(node);
     }
@@ -33,7 +35,7 @@ export class Delegate<T> {
         return handle.unlisten();
     }
 
-    public removeValue(listener: Action1<T>): boolean {
+    public removeValue(listener: Action<T>): boolean {
         return this.listeners.removeValue(listener);
     }
 

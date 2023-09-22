@@ -21,8 +21,7 @@ export class DailyTaskItem extends BaseView {
     protected onEnable() {
         super.onEnable?.();
 
-        const that = this;
-        this.binder.bindV_ButtonClick(this.buttonCreate!, () => that.onCompleteClick());
+        this.binder.bindV_ButtonClick(this.buttonCreate!, () => this.onCompleteClick());
     }
 
     public setData(taskData: DailyTask):void {

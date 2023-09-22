@@ -1,11 +1,10 @@
-import { Delegate, type Handle } from "./Delegate";
-import { type Action1 } from "./Action";
+import { Delegate, type Handle, Action } from "./Delegate";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class EventEmitter<TEvent=string|number, TArg=any> {
     private map: Map<TEvent, Delegate<TArg>> = new Map();
 
-    public on(evt: TEvent, callback: Action1<TArg>) : Handle {
+    public on(evt: TEvent, callback: Action<TArg>) : Handle {
         let del: Delegate<TArg>|undefined = this.map.get(evt);
         if (!del) {
             del = new Delegate<TArg>();
@@ -14,15 +13,15 @@ export class EventEmitter<TEvent=string|number, TArg=any> {
         return del.add(callback);
     }
 
-    public once(evt: TEvent, callback: Action1<TArg>) : Handle {
-        const f: Action1<TArg> = (args) => {
+    public once(evt: TEvent, callback: Action<TArg>) : Handle {
+        const f: Action<TArg> = (args) => {
             callback(args);
             this.off(evt, f);
         };
         return this.on(evt, f);
     }
 
-    public off(evt: TEvent, callback: Action1<TArg>) : void {
+    public off(evt: TEvent, callback: Action<TArg>) : void {
         const del: Delegate<TArg>|undefined = this.map.get(evt);
         del && del.removeValue(callback);
     }

@@ -33,9 +33,8 @@ export class PageDaily extends BasePage {
     onEnable() {
         super.onEnable();
 
-        const that = this;
-        this.binder.bindV_ButtonClick(this.buttonCreate!, () => that.onCreateTaskClick());
-        this.binder.bindProperty(Models.get(DailyTaskModel).tasks, () => that.onTasksUpdate());
+        this.binder.bindV_ButtonClick(this.buttonCreate!, () => this.onCreateTaskClick());
+        this.binder.bindProperty(Models.get(DailyTaskModel).tasks, () => this.onTasksUpdate());
 
         Models.get(DailyTaskModel).getDailyTasks();
     }

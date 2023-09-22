@@ -5,7 +5,7 @@ import { UIDefine } from "./UIDefine";
 const { ccclass, property } = _decorator;
 
 @UIDefine({ bundleName: "prefabs", assetName: "ui/UIDialogueView" })
-@ccclass("UIToastView")
+@ccclass("UIDialogueView")
 export class UIDialogueView extends BaseWindow {
     @property(Label)
         labelMsg: Label|null = null;
@@ -37,7 +37,7 @@ export class UIDialogueView extends BaseWindow {
         this.labelMsg!.string = message;
 
         return new Promise<boolean>((resolve) => {
-            this.binder.bindProperty(this.state, (v) => {
+            this.binder.bindProperty(this.state, (v:boolean|undefined) => {
                 if (v !== undefined) {
                     resolve(v);
                     // this.binder.clear();
@@ -49,9 +49,8 @@ export class UIDialogueView extends BaseWindow {
     protected onEnable(): void {
         super.onEnable?.();
 
-        const that = this;
-        this.binder.bindV_ButtonClick(this.buttonConfirm!, () => that.onConfirm());
-        this.binder.bindV_ButtonClick(this.buttonCancel!, () => that.onCancel());
+        this.binder.bindV_ButtonClick(this.buttonConfirm!, () => this.onConfirm());
+        this.binder.bindV_ButtonClick(this.buttonCancel!, () => this.onCancel());
     }
 
     protected onDisable() {

@@ -1,4 +1,4 @@
-import { type Action0, type Action1 } from "./Action";
+import { Action } from "./Delegate";
 import { Delegate, type Handle } from "./Delegate";
 export type PropertyEqualityFn<T> = (newValue: T, oldValue: T) => boolean
 
@@ -24,7 +24,7 @@ class Property<T> {
         }
     }
 
-    public addListener(listener: Action0 | Action1<T>): Handle {
+    public addListener(listener: Action<T>): Handle {
         return this.listeners.add(listener);
     }
 
@@ -32,7 +32,7 @@ class Property<T> {
         return this.listeners.remove(handle);
     }
 
-    public removeListener(listener: Action0 | Action1<T>): boolean {
+    public removeListener(listener: Action<T>): boolean {
         return this.listeners.removeValue(listener);
     }
 

@@ -30,9 +30,8 @@ export class PageProfile extends BasePage {
         this.editBoxName!.string = localStorage.getItem("username") || "";
         this.editBoxPassword!.string = localStorage.getItem("password") || "";
 
-        const that = this;
-        this.binder.bindV_ButtonClick(this.buttonRegister!, () => that.onRegisterClick());
-        this.binder.bindV_ButtonClick(this.buttonLogin!, () => that.onLoginClick());
+        this.binder.bindV_ButtonClick(this.buttonRegister!, () => this.onRegisterClick());
+        this.binder.bindV_ButtonClick(this.buttonLogin!, () => this.onLoginClick());
     }
 
     protected onDisable():void {

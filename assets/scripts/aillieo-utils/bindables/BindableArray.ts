@@ -1,4 +1,4 @@
-import { Action1 } from "../Action";
+import { Action } from "../Delegate";
 import { EventEmitter } from "../EventEmitter";
 
 enum EventType{
@@ -19,11 +19,11 @@ class BindableArray<T> {
         this.array = new Array<T>(...items);
     }
 
-    on(evt: EventType, listener: Action1<ArgType>): void {
+    on(evt: EventType, listener: Action<ArgType>): void {
         this.events.on(evt, listener);
     }
 
-    off(evt: EventType, listener: Action1<ArgType>): void {
+    off(evt: EventType, listener: Action<ArgType>): void {
         this.events.off(evt, listener);
     }
 

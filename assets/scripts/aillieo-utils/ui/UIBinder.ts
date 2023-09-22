@@ -1,7 +1,6 @@
 import { Button, Toggle, Node, Label } from "cc";
-import { Action1 } from "../Action";
+import { Action, Delegate } from "../Delegate";
 import { Binder, BinderLike } from "../Binder";
-import { Delegate } from "../Delegate";
 import { Property } from "../Property";
 
 export type CallbackRecord = {
@@ -14,11 +13,11 @@ export class UIBinder implements BinderLike {
     private binder : Binder = new Binder();
     private records : CallbackRecord[] = new Array<CallbackRecord>(0);
 
-    public bindProperty<T>(prop: Property<T>, listener: Action1<T>): void {
+    public bindProperty<T>(prop: Property<T>, listener: Action<T>): void {
         this.binder.bindProperty(prop, listener);
     }
 
-    public bindEvent<T>(evt: Delegate<T>, listener: Action1<T>): void {
+    public bindEvent<T>(evt: Delegate<T>, listener: Action<T>): void {
         this.binder.bindEvent(evt, listener);
     }
 

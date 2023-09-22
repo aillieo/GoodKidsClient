@@ -5,8 +5,9 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface CompletionRecord {
-  time: number;
-  note: string | null;
+export interface Item {
+  id: number;
+  name: string;
+  icon: string;
   [k: string]: unknown;
 }

@@ -1,4 +1,4 @@
-import { Action1 } from "../Action";
+import { Action } from "../Delegate";
 import { EventEmitter } from "../EventEmitter";
 
 enum EventType{
@@ -19,11 +19,11 @@ class BindableMap<K, V> implements Map<K, V> {
         this.map = new Map(entries);
     }
 
-    on(evt: EventType, listener: Action1<ArgType<K>>): void {
+    on(evt: EventType, listener: Action<ArgType<K>>): void {
         this.events.on(evt, listener);
     }
 
-    off(evt: EventType, listener: Action1<ArgType<K>>): void {
+    off(evt: EventType, listener: Action<ArgType<K>>): void {
         this.events.off(evt, listener);
     }
 

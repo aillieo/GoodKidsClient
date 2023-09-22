@@ -8,6 +8,7 @@
 export interface User {
   uid: number;
   username: string;
+  avatar: string;
   user_type: number;
   create_time: number;
   [k: string]: unknown;

@@ -6,7 +6,7 @@ import { DailyTaskModel } from "../model/DailyTaskModel";
 import { Models } from "../model/Models";
 const { ccclass, property } = _decorator;
 
-@UIDefine({ bundleName: "prefabs", assetName: "ui/UIDailyTaskCreate" })
+@UIDefine({ bundleName: "prefabs", assetName: "daily/UIDailyTaskCreate" })
 @ccclass("UIDailyTaskCreate")
 export class UIDailyTaskCreate extends BaseWindow {
     @property(EditBox)
@@ -40,6 +40,7 @@ export class UIDailyTaskCreate extends BaseWindow {
             this.editBoxTaskDes!.string).then((succ) => {
             if (succ) {
                 Models.get(DailyTaskModel).getDailyTasks();
+                UIManager.getInstance().close(this);
             }
         });
     }

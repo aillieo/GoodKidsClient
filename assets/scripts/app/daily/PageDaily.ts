@@ -1,10 +1,12 @@
-import { _decorator, Label, Button, Prefab, EditBox } from "cc";
+import { _decorator, Label, Button, Prefab } from "cc";
 import { DynamicScrollView } from "../../aillieo-utils/ui/DynamicScrollView";
 import { BasePage } from "../main/BasePage";
 import { DailyTaskModel } from "../model/DailyTaskModel";
 import { DailyTaskItem } from "./DailyTaskItem";
 import { Logger } from "../misc/Logger";
 import { Models } from "../model/Models";
+import { UIManager } from "../uiframework/UIManager";
+import { UIDailyTaskCreate } from "./UIDailyTaskCreate";
 const { ccclass, property } = _decorator;
 
 @ccclass("PageDaily")
@@ -23,12 +25,6 @@ export class PageDaily extends BasePage {
 
     @property(Button)
         buttonCreate: Button|null = null;
-
-    @property(EditBox)
-        editBoxTaskName: EditBox|null = null;
-
-    @property(EditBox)
-        editBoxTaskDes: EditBox|null = null;
 
     onEnable() {
         super.onEnable();
@@ -57,12 +53,6 @@ export class PageDaily extends BasePage {
     }
 
     private onCreateTaskClick() :void {
-        Models.get(DailyTaskModel).createTask(
-            this.editBoxTaskName!.string,
-            this.editBoxTaskDes!.string).then((succ) => {
-            if (succ) {
-                Models.get(DailyTaskModel).getDailyTasks();
-            }
-        });
+        UIManager.getInstance().open(UIDailyTaskCreate);
     }
 }

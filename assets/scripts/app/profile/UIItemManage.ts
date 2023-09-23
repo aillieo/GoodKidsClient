@@ -4,9 +4,9 @@ import { UIDefine } from "../uiframework/UIDefine";
 import { UIManager } from "../uiframework/UIManager";
 const { ccclass, property } = _decorator;
 
-@UIDefine({ bundleName: "prefabs", assetName: "profile/UIItemCreate" })
-@ccclass("UIItemCreate")
-export class UIItemCreate extends BaseWindow {
+@UIDefine({ bundleName: "prefabs", assetName: "profile/UIItemManage" })
+@ccclass("UIItemManage")
+export class UIItemManage extends BaseWindow {
     @property(Button)
         buttonConfirm: Button|null = null;
 

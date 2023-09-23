@@ -1,11 +1,6 @@
 import { AppManager } from "../AppManager";
 import { Singleton } from "../../aillieo-utils/Singleton";
 import { Session } from "../misc/Session";
-import { Property } from "../../aillieo-utils/Property";
-
-export type UserData= {
-    username :string;
-}
 
 // eslint-disable-next-line no-use-before-define
 export class SessionManager extends Singleton<SessionManager>() {
@@ -17,13 +12,11 @@ export class SessionManager extends Singleton<SessionManager>() {
         this.session = Session.Create(url);
     }
 
-    public readonly userData:Property<UserData|undefined> = new Property<UserData|undefined>(undefined);
-
-    async getUserData(u:string, p:string, isReg:boolean) : Promise<boolean> {
+    async login(username:string, password:string, isReg:boolean) : Promise<boolean> {
         if (isReg) {
-            return this.session!.register(u, p);
+            return this.session!.register(username, password);
         } else {
-            return this.session!.login(u, p);
+            return this.session!.login(username, password);
         }
     }
 }

@@ -17,10 +17,18 @@ export class ItemModel extends BaseModel {
         return AppManager.getInstance().url + "item";
     }
 
-    public async getUser() : Promise<boolean> {
-        const items = await this.session.get<Item[]>("/me");
+    public async getItems() : Promise<boolean> {
+        const items = await this.session.get<Item[]>("/");
         if (items) {
             this.items.set(items);
+            return true;
+        }
+        return false;
+    }
+
+    public async modifyItem(itemData: Item) : Promise<boolean> {
+        const newItemData = await this.session.post<Item, Item>(`/${itemData.id}`, itemData);
+        if (newItemData) {
             return true;
         }
         return false;

@@ -14,14 +14,14 @@ export class DailyTaskItem extends BaseView {
     public taskDes : Label = null!;
 
     @property(Button)
-        buttonCreate: Button|null = null;
+        buttonComplete: Button|null = null;
 
     private taskId:number = 0;
 
     protected onEnable() {
         super.onEnable?.();
 
-        this.binder.bindV_ButtonClick(this.buttonCreate!, () => this.onCompleteClick());
+        this.binder.bindV_ButtonClick(this.buttonComplete!, () => this.onCompleteClick());
     }
 
     public setData(taskData: DailyTask):void {

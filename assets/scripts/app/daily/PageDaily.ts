@@ -17,9 +17,6 @@ export class PageDaily extends BasePage {
     @property
         text: string = "hello";
 
-    @property(Prefab)
-        itemPrefab: Prefab|null = null;
-
     @property(DynamicScrollView)
         listView: DynamicScrollView|null = null;
 

@@ -1453,18 +1453,12 @@
       "__id__": 5
     },
     "text": "hello",
-    "itemPrefab": {
-      "__uuid__": "1be50896-b22b-4148-96bd-12db3ac613c7",
-      "__expectedType__": "cc.Prefab"
-    },
     "listView": {
       "__id__": 33
     },
     "buttonCreate": {
       "__id__": 48
     },
-    "editBoxTaskName": null,
-    "editBoxTaskDes": null,
     "_id": ""
   },
   {

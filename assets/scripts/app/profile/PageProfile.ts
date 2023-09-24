@@ -5,7 +5,7 @@ import { Logger } from "../misc/Logger";
 import { Models } from "../model/Models";
 import { UserModel } from "../model/UserModel";
 import { UIManager } from "../uiframework/UIManager";
-import { UIItemCreate } from "./UIItemCreate";
+import { UIItemManage } from "./UIItemManage";
 const { ccclass, property } = _decorator;
 
 @ccclass("PageProfile")
@@ -92,6 +92,6 @@ export class PageProfile extends BasePage {
     }
 
     private onCreateItemClick() : void {
-        UIManager.getInstance().open(UIItemCreate);
+        UIManager.getInstance().open(UIItemManage);
     }
 }

@@ -1,7 +1,7 @@
 [
   {
     "__type__": "cc.Prefab",
-    "_name": "DailyTaskItem",
+    "_name": "ItemItem",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_native": "",
@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "DailyTaskItem",
+    "_name": "ItemItem",
     "_objFlags": 0,
     "__editorExtras__": {},
     "_parent": null,
@@ -767,7 +767,7 @@
     "fileId": "ebLrbdLUVBtoZbuluWBdcs"
   },
   {
-    "__type__": "a285eL445pNMplHSlDSbjLR",
+    "__type__": "e3b60LOZlJAjp634K0RLjLm",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -778,20 +778,20 @@
     "__prefab": {
       "__id__": 33
     },
-    "taskName": {
+    "itemName": {
       "__id__": 5
     },
-    "taskDes": {
+    "itemDes": {
       "__id__": 11
     },
-    "buttonComplete": {
+    "buttonEdit": {
       "__id__": 25
     },
     "_id": ""
   },
   {
     "__type__": "cc.CompPrefabInfo",
-    "fileId": "d5gSgz7pFLHqQIBmckNLKZ"
+    "fileId": "be46chdiNPoZgz8uRFZDGL"
   },
   {
     "__type__": "cc.PrefabInfo",

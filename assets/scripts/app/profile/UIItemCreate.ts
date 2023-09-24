@@ -1,7 +1,10 @@
-import { Button, EditBox, Label, _decorator } from "cc";
+import { Button, EditBox, _decorator } from "cc";
 import { BaseWindow } from "../uiframework/BaseWindow";
 import { UIDefine } from "../uiframework/UIDefine";
 import { UIManager } from "../uiframework/UIManager";
+import { Item } from "../schemas/Item";
+import { Models } from "../model/Models";
+import { ItemModel } from "../model/ItemModel";
 const { ccclass, property } = _decorator;
 
 @UIDefine({ bundleName: "prefabs", assetName: "profile/UIItemCreate" })
@@ -30,7 +33,12 @@ export class UIItemCreate extends BaseWindow {
     }
 
     private onConfirm() : void {
-
+        const itemData : Item = { id: 0, name: "", icon: "" };
+        Models.get(ItemModel).modifyItem(itemData).then((succ) => {
+            if (succ) {
+                Models.get(ItemModel).getItems();
+            }
+        });
     }
 
     private onClose() : void {

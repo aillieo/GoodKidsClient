@@ -1,10 +1,10 @@
 import { type Delegate, type Handle, Action } from "./Delegate";
 import { type Property } from "./Property";
 
-export interface BinderLike{
-     bindProperty<T>(prop: Property<T>, listener: Action<T>): void;
-     bindEvent<T>(evt: Delegate<T>, listener: Action<T>): void;
-     clear():void ;
+export interface BinderLike {
+    bindProperty<T>(prop: Property<T>, listener: Action<T>): void;
+    bindEvent<T>(evt: Delegate<T>, listener: Action<T>): void;
+    clear(): void;
 }
 
 export class Binder implements BinderLike {

@@ -48,7 +48,7 @@ export class Delegate<T> {
             try {
                 listener(arg);
             } catch (error) {
-                console.error("Error in property change listener:", error);
+                console.error("Error in invoking a Delegate:", error);
             }
         });
     }

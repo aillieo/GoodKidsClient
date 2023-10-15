@@ -11,7 +11,7 @@ export type CallbackRecord = {
 
 export class UIBinder implements BinderLike {
     private binder : Binder = new Binder();
-    private records : CallbackRecord[] = new Array<CallbackRecord>(0);
+    private records : CallbackRecord[] = [];
 
     public bindProperty<T>(prop: Property<T>, listener: Action<T>): void {
         this.binder.bindProperty(prop, listener);

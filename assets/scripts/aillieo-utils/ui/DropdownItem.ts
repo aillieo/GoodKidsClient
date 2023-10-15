@@ -1,4 +1,4 @@
-import { Node, _decorator, Vec2, Size, instantiate, UITransform, Rect, Component, Toggle, SpriteFrame, Label, Sprite, math, Canvas, error, Color, Button, UIOpacity, Tween, director, NodeEventType, EventTouch, CCFloat, CCInteger, Vec3 } from "cc";
+import { _decorator, UITransform, Component, Toggle, Label, Sprite } from "cc";
 const { ccclass, property, disallowMultiple } = _decorator;
 
 @ccclass("DropdownItem")

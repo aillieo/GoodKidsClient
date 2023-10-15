@@ -114,11 +114,11 @@ export class Dropdown extends Component {
     @property({ serializable: true, visible: true })
     protected _interactable: boolean = true;
 
-    get interactable(): boolean {
+    public get interactable(): boolean {
         return this._interactable;
     }
 
-    set interactable(value) {
+    public set interactable(value) {
         if (this._interactable === value) {
             return;
         }
@@ -131,13 +131,16 @@ export class Dropdown extends Component {
         }
     }
 
+    public get alphaTween(): Tween<UIOpacity> | null {
+        return this._alphaTween;
+    }
+
     private _dropdown: Node | null = null;
     private _blocker: Node | null = null;
     private _items: DropdownItem[] = [];
-    private alphaTween: Tween<UIOpacity> | null = null;
+    private _alphaTween: Tween<UIOpacity> | null = null;
     private validTemplate: boolean = false;
-    private static kHighSortingLayer: number = 30000;
-    private static s_NoOptionData: OptionData = { text: null, image: null };
+    private static _sNoOptionData: OptionData = { text: null, image: null };
 
     private _pressed: boolean = false;
 
@@ -146,14 +149,14 @@ export class Dropdown extends Component {
     }
 
     public set value(value: number) {
-        this.set(value);
+        this._set(value);
     }
 
     public setValueWithoutNotify(input: number): void {
-        this.set(input, false);
+        this._set(input, false);
     }
 
-    private set(value: number, sendCallback: boolean = true): void {
+    private _set(value: number, sendCallback: boolean = true): void {
         if (value === this._value || this.options.length === 0) {
             return;
         }
@@ -225,7 +228,7 @@ export class Dropdown extends Component {
         }
 
         if (this._pressed) {
-            this.onPointerClick(event!);
+            this._onPointerClick(event!);
         }
 
         this._pressed = false;
@@ -250,7 +253,7 @@ export class Dropdown extends Component {
     protected override onLoad(): void {
         super.onLoad?.();
 
-        this.alphaTween = null;
+        this._alphaTween = null;
 
         if (this._captionImage) { this._captionImage.enabled = this._captionImage.spriteFrame != null; }
 
@@ -258,7 +261,7 @@ export class Dropdown extends Component {
     }
 
     protected override start(): void {
-        this.alphaTween = null;
+        this._alphaTween = null;
 
         super.start?.();
 
@@ -273,7 +276,7 @@ export class Dropdown extends Component {
     protected override onDisable(): void {
         this._unregisterEvent();
 
-        this.immediateDestroyDropdownList();
+        this._immediateDestroyDropdownList();
 
         if (this._blocker != null) {
             this.destroyBlocker(this._blocker);
@@ -284,7 +287,7 @@ export class Dropdown extends Component {
     }
 
     public refreshShownValue(): void {
-        let data: OptionData = Dropdown.s_NoOptionData;
+        let data: OptionData = Dropdown._sNoOptionData;
 
         if (this.options.length > 0) { data = this.options[math.clamp(this._value, 0, this.options.length - 1)]; }
 
@@ -326,7 +329,7 @@ export class Dropdown extends Component {
         this.refreshShownValue();
     }
 
-    private setupTemplate(rootCanvas: Canvas): void {
+    private _setupTemplate(rootCanvas: Canvas): void {
         this.validTemplate = false;
 
         if (!this._template) {
@@ -374,19 +377,19 @@ export class Dropdown extends Component {
             return;
         }
 
-        const item: DropdownItem = Dropdown.getOrAddComponent(itemToggle!.node, DropdownItem);
+        const item: DropdownItem = Dropdown._getOrAddComponent(itemToggle!.node, DropdownItem);
         item.text = this._itemText;
         item.image = this._itemImage;
         item.toggle = itemToggle;
         item.rectTransform = itemToggle!.node.getComponent(UITransform);
 
-        Dropdown.getOrAddComponent(templateGo, UIOpacity);
+        Dropdown._getOrAddComponent(templateGo, UIOpacity);
         templateGo.active = false;
 
         this.validTemplate = true;
     }
 
-    private static getOrAddComponent<T extends Component>(go: Node, ctor: Constructor<T>): T {
+    private static _getOrAddComponent<T extends Component>(go: Node, ctor: Constructor<T>): T {
         let comp: T | null = go.getComponent(ctor);
         if (!comp) {
             comp = go.addComponent(ctor);
@@ -394,7 +397,7 @@ export class Dropdown extends Component {
         return comp;
     }
 
-    public onPointerClick(eventData: EventTouch): void {
+    private _onPointerClick(eventData: EventTouch): void {
         this.show();
     }
 
@@ -403,7 +406,7 @@ export class Dropdown extends Component {
 
         const rootCanvas: Canvas = director.getScene()!.getChildByName("Canvas")!.getComponent(Canvas)!;
         if (!this.validTemplate) {
-            this.setupTemplate(rootCanvas);
+            this._setupTemplate(rootCanvas);
             if (!this.validTemplate) return;
         }
 
@@ -444,12 +447,12 @@ export class Dropdown extends Component {
 
         for (let i = 0; i < this.options.length; ++i) {
             const data: OptionData = this.options[i];
-            const item: DropdownItem = this.addItem(data, this.value === i, itemTemplate, this._items);
+            const item: DropdownItem = this._addItem(data, this.value === i, itemTemplate, this._items);
             if (item == null) continue;
 
             // Automatically set up a toggle state change listener
             item.toggle!.isChecked = this.value === i;
-            item.toggle!.node.on("toggle", (x: boolean) => this.onSelectItem(item.toggle!));
+            item.toggle!.node.on("toggle", (x: boolean) => this._onSelectItem(item.toggle!));
 
             // Select current option
             if (item.toggle!.isChecked) {
@@ -460,37 +463,10 @@ export class Dropdown extends Component {
         // Reposition all items now that all of them have been added
         const sizeDelta: Size = new Size(contentRectTransform.width, contentRectTransform.height);
         sizeDelta.y = itemSize.y * this._items.length + offsetMin.y - offsetMax.y;
-        // sizeDelta.y = itemSize.y * this._items.length;
         contentRectTransform.contentSize = sizeDelta;
 
         const extraSpace: number = dropdownRectTransform.contentSize.height - contentRectTransform.contentSize.height;
         if (extraSpace > 0) { dropdownRectTransform.contentSize = new Size(dropdownRectTransform.contentSize.x, dropdownRectTransform.contentSize.y - extraSpace); }
-
-        // Invert anchoring and position if the dropdown is partially or fully outside of the canvas rect.
-        // Typically this will have the effect of placing the dropdown above the button instead of below,
-        // but it works as inversion regardless of the initial setup.
-        // const corners: Vec3[] = new Array<Vec3>(4);
-        // dropdownRectTransform.GetWorldCorners(corners);
-
-        // const dropdownRectBounds : Rect = dropdownRectTransform.getBoundingBox();
-        // const dropdownRectBoundsWorld = dropdownRectBounds.transformMat4(dropdownRectTransform!.node.worldMatrix);
-
-        // const rootCanvasRectTransform: UITransform = rootCanvas.node.getComponent(UITransform)!;
-        // const rootCanvasRect: Rect = rootCanvasRectTransform.getBoundingBox();
-        for (let axis = 0; axis < 2; axis++) {
-            // let outside: boolean = false;
-            // for (let i = 0; i < 4; i++) {
-            //     const corner: Vec3 = rootCanvasRectTransform.InverseTransformPoint(corners[i]);
-            //     if (
-            //         (corner[axis] < rootCanvasRect.min[axis] && !Mathf.Approximately(corner[axis], rootCanvasRect.min[axis])) ||
-            //   (corner[axis] > rootCanvasRect.max[axis] && !Mathf.Approximately(corner[axis], rootCanvasRect.max[axis]))
-            //     ) {
-            //         outside = true;
-            //         break;
-            //     }
-            // }
-            // if (outside) RectTransformUtility.FlipLayoutOnAxis(dropdownRectTransform, axis, false, false);
-        }
 
         let positionY: number = 0;
         for (let i = 0; i < this._items.length; i++) {
@@ -505,7 +481,7 @@ export class Dropdown extends Component {
         }
 
         // Fade in the popup
-        this.alphaFadeList(this._alphaFadeSpeed, 0, 1);
+        this._alphaFadeList(this._alphaFadeSpeed, 0, 1);
 
         // Make drop-down template and item template inactive
         this._template!.node.active = false;
@@ -551,7 +527,7 @@ export class Dropdown extends Component {
 
     protected createItem(itemTemplate: DropdownItem): DropdownItem {
         const newNode = instantiate(itemTemplate.node);
-        return Dropdown.getOrAddComponent(newNode, DropdownItem);
+        return Dropdown._getOrAddComponent(newNode, DropdownItem);
     }
 
     protected destroyItem(item: DropdownItem): void {
@@ -559,7 +535,7 @@ export class Dropdown extends Component {
     }
 
     // Add a new drop-down list item with the specified values.
-    private addItem(
+    private _addItem(
         data: OptionData,
         selected: boolean,
         itemTemplate: DropdownItem,
@@ -590,9 +566,9 @@ export class Dropdown extends Component {
         return item;
     }
 
-    private alphaFadeList(duration: number, alpha: number): void;
-    private alphaFadeList(duration: number, alphaStart: number, alpha: number): void;
-    private alphaFadeList(duration: number, alphaStartOrAlpha: number, alpha?: number): void {
+    private _alphaFadeList(duration: number, alpha: number): void;
+    private _alphaFadeList(duration: number, alphaStart: number, alpha: number): void;
+    private _alphaFadeList(duration: number, alphaStartOrAlpha: number, alpha?: number): void {
         const group: UIOpacity = this._dropdown!.getComponent(UIOpacity)!;
 
         let alphaStart: number;
@@ -605,14 +581,14 @@ export class Dropdown extends Component {
 
         if (alpha === alphaStart) return;
 
-        this.setAlpha(alphaStart);
+        this._setAlpha(alphaStart);
         const tween: Tween<UIOpacity> = new Tween(group);
         tween.to(duration, { opacity: alpha * 255 }).start();
 
-        this.alphaTween = tween;
+        this._alphaTween = tween;
     }
 
-    private setAlpha(alpha: number): void {
+    private _setAlpha(alpha: number): void {
         if (!this._dropdown) return;
         const group: UIOpacity = this._dropdown.getComponent(UIOpacity)!;
         group.opacity = alpha * 255;
@@ -620,28 +596,27 @@ export class Dropdown extends Component {
 
     public hide(): void {
         if (this._dropdown != null) {
-            this.alphaFadeList(this._alphaFadeSpeed, 0);
+            this._alphaFadeList(this._alphaFadeSpeed, 0);
             // User could have disabled the dropdown during the OnValueChanged call.
             if (this.node.active && this.enabledInHierarchy) {
-                this.delayedDestroyDropdownList(this._alphaFadeSpeed);
+                this._delayedDestroyDropdownList(this._alphaFadeSpeed);
             }
         }
         if (this._blocker != null) this.destroyBlocker(this._blocker);
         this._blocker = null;
-        // this.Select();
     }
 
-    private async delayedDestroyDropdownList(delay: number) {
+    private async _delayedDestroyDropdownList(delay: number) {
         await new Promise<void>((resolve) => {
             this.scheduleOnce(() => {
                 resolve();
             }, delay);
         });
 
-        this.immediateDestroyDropdownList();
+        this._immediateDestroyDropdownList();
     }
 
-    private immediateDestroyDropdownList(): void {
+    private _immediateDestroyDropdownList(): void {
         for (let i = 0; i < this._items.length; i++) {
             if (this._items[i] != null) {
                 this.destroyItem(this._items[i]);
@@ -657,7 +632,7 @@ export class Dropdown extends Component {
     }
 
     // Change the value and hide the dropdown.
-    private onSelectItem(toggle: Toggle): void {
+    private _onSelectItem(toggle: Toggle): void {
         if (!toggle.isChecked) toggle.isChecked = true;
 
         let selectedIndex = -1;
@@ -671,9 +646,9 @@ export class Dropdown extends Component {
             }
         }
 
-        console.log("selectedIndex " + selectedIndex + " " + this.options[selectedIndex].text);
-
-        if (selectedIndex < 0) return;
+        if (selectedIndex < 0) {
+            return;
+        }
 
         this.value = selectedIndex;
         this.hide();

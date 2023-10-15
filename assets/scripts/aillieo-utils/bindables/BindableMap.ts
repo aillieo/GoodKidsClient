@@ -1,7 +1,7 @@
 import { Action } from "../Delegate";
 import { EventEmitter } from "../EventEmitter";
 
-enum EventType{
+enum EventType {
     ADD = "add",
     UPDATE = "update",
     DELETE = "delete",

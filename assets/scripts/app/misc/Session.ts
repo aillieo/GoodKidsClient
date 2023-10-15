@@ -4,18 +4,18 @@ import { Token } from "../schemas/Token";
 import { Utils } from "./Utils";
 
 export class Session {
-    public static Create(server: string) : Session {
+    public static create(server: string): Session {
         const session = new Session();
         session.server = server;
         return session;
     }
 
-    private server:string|undefined;
-    private token:string|undefined;
-    private uid:number|undefined;
-    private auth:Record<string, string>|undefined;
+    private server: string | undefined;
+    private token: string | undefined;
+    private uid: number | undefined;
+    private auth: Record<string, string> | undefined;
 
-    public async login(username: string, password:string) : Promise<boolean> {
+    public async login(username: string, password: string): Promise<boolean> {
         try {
             const response = await HttpHelper.post<Login, Token>(
                 this.server + "/login",
@@ -30,7 +30,7 @@ export class Session {
         }
     }
 
-    public async register(username: string, password:string) : Promise<boolean> {
+    public async register(username: string, password: string): Promise<boolean> {
         try {
             const response = await HttpHelper.post<Login, Token>(
                 this.server + "/register",
@@ -48,7 +48,7 @@ export class Session {
     public async get<R>(
         baseUrl: string,
         params?: Record<string, string>
-    ): Promise<R|undefined> {
+    ): Promise<R | undefined> {
         try {
             return await HttpHelper.get<R>(this.server + baseUrl, params, this.auth);
         } catch (e) {
@@ -59,7 +59,7 @@ export class Session {
     public async post<T, R>(
         url: string,
         body: T
-    ): Promise<R|undefined> {
+    ): Promise<R | undefined> {
         try {
             return await HttpHelper.post<T, R>(this.server + url, body, this.auth);
         } catch (e) {
@@ -67,7 +67,7 @@ export class Session {
         }
     }
 
-    private handleError(err : unknown) {
+    private handleError(err: unknown) {
         if (err instanceof HttpError) {
             try {
                 const json = JSON.parse(err.message);
@@ -75,7 +75,7 @@ export class Session {
                     Utils.pushToast(json.detail.toString());
                     return;
                 }
-            } catch {}
+            } catch { }
         }
 
         if (err instanceof Error) {

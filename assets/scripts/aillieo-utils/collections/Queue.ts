@@ -5,7 +5,7 @@ class Queue<T> {
     private capacity: number;
 
     constructor() {
-        this.data = new Array<T>(0);
+        this.data = [];
         this.head = 0;
         this.tail = 0;
         this.capacity = 0;

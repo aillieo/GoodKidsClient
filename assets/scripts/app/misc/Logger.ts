@@ -3,12 +3,11 @@ import { debug as ccdebug, log as cclog, warn as ccwarn, error as ccerror, asser
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T = unknown> = new (...args: any[]) => T;
 
-enum LoggerMask
-{
-    Debug= 1 << 0,
-    Info= 1 << 1,
-    Warn= 1 << 2,
-    Error= 1 << 3,
+enum LoggerMask {
+    Debug = 1 << 0,
+    Info = 1 << 1,
+    Warn = 1 << 2,
+    Error = 1 << 3,
     NoDebug = Info | Warn | Error,
     Everything = Debug | Info | Warn | Error,
 }
@@ -17,11 +16,11 @@ export class Logger {
     // eslint-disable-next-line no-use-before-define
     private static readonly map: Map<Constructor, Logger> = new Map();
 
-    private name : string;
+    private name: string;
 
-    public mask : LoggerMask = LoggerMask.Debug;
+    public mask: LoggerMask = LoggerMask.Debug;
 
-    constructor(name:string) {
+    constructor(name: string) {
         this.name = name;
     }
 
@@ -45,7 +44,7 @@ export class Logger {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public log(message?: any, ...optionalParams: any[]):void {
+    public log(message?: any, ...optionalParams: any[]): void {
         if ((this.mask & LoggerMask.Info) === 0) {
             return;
         }

@@ -6,7 +6,7 @@ import { Item } from "../schemas/Item";
 export class ItemModel extends BaseModel {
     public readonly url: string;
 
-    public readonly items:Property<Item[]> = new Property<Item[]>(new Array<Item>(0));
+    public readonly items:Property<Item[]> = new Property<Item[]>([]);
 
     public constructor() {
         super();

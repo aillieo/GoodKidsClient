@@ -21,7 +21,8 @@ export class DailyTaskModel extends BaseModel {
         const result = await this.session.post<DailyTask, DailyTask>("/dailytask/", {
             id: 0,
             taskName,
-            taskDes
+            taskDes,
+            lastRecord: null
         });
 
         if (result) {

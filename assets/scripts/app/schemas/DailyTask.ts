@@ -10,6 +10,7 @@ export interface DailyTask {
   taskName: string;
   taskDes: string;
   lastRecord: CompletionRecord | null;
+  reward: [number, number][];
   [k: string]: unknown;
 }
 export interface CompletionRecord {

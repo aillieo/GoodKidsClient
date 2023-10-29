@@ -9,12 +9,12 @@ type Constructor<T = unknown> = new (...args: any[]) => T;
 
 // eslint-disable-next-line no-use-before-define
 export class UIManager extends Singleton<UIManager>() {
-    private root : Node | null = null;
+    private root: Node | null = null;
 
     protected constructor() {
         super();
 
-        const canvas : Node|null = director.getScene()!.getChildByName("Canvas");
+        const canvas: Node | null = director.getScene()!.getChildByName("Canvas");
         let UIRoot = canvas!.getChildByName("UIRoot");
         if (UIRoot == null) {
             UIRoot = new Node("UIRoot");
@@ -25,14 +25,14 @@ export class UIManager extends Singleton<UIManager>() {
         this.root = UIRoot;
     }
 
-    public async open<T extends BaseWindow>(viewClass: Constructor<T>):Promise<T|null> {
-        const uiCfg : UIConfig = (viewClass.prototype).__uiCfg;
-        const node : Node = await ResourceManager.loadPrefab(uiCfg.bundleName, uiCfg.assetName);
+    public async open<T extends BaseWindow>(viewClass: Constructor<T>): Promise<T | null> {
+        const uiCfg: UIConfig = (viewClass.prototype).__uiCfg;
+        const node: Node = await ResourceManager.loadPrefab(uiCfg.bundleName, uiCfg.assetName);
         this.root!.addChild(node);
         return node.getComponent(BaseWindow) as T;
     }
 
-    public close(window:BaseWindow) : void {
+    public close(window: BaseWindow): void {
         ResourceManager.release(window.node);
     }
 }

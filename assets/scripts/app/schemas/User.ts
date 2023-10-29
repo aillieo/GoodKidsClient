@@ -9,7 +9,7 @@ export interface User {
   uid: number;
   username: string;
   avatar: string;
-  user_type: number;
+  user_type: "NORMAL" | "ADVANCED" | "ADMIN";
   create_time: number;
   [k: string]: unknown;
 }
